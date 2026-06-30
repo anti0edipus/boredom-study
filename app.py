@@ -709,6 +709,9 @@ def delete_all():
 
 
 # ── Initialise DB on startup (runs under both gunicorn and python app.py) ─────
+import logging
+logging.basicConfig(level=logging.INFO)
+logging.info(f'DATABASE_PATH = {Config.DATABASE_PATH}')
 db_module.init_db()
 
 if __name__ == '__main__':
