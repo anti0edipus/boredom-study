@@ -2,7 +2,7 @@ import os
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'change-this-before-deploying-abc123')
-    DATABASE_PATH = os.environ.get('DATABASE_PATH', '/data/study.db')
+    DATABASE_PATH = os.environ.get('DATABASE_PATH', 'study.db')
     ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'changeme')
     PROLIFIC_COMPLETION_URL = os.environ.get(
         'PROLIFIC_COMPLETION_URL',

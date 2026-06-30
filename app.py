@@ -610,13 +610,60 @@ def export_xlsx():
     rows = db_module.get_all_participants(g.db)
     counts = db_module.get_condition_counts(g.db)
 
+    # Explicit column list — deprecated columns (autotrait_*, mlq_6-10) excluded
+    EXPORT_COLUMNS = [
+        'participant_id', 'prolific_pid', 'study_id', 'session_id',
+        'test_mode', 'condition', 'assignment_timestamp',
+        'current_step', 'start_timestamp', 'finish_timestamp', 'total_duration_sec', 'completed',
+        'consent', 'consent_timestamp', 'attention_check_pass',
+        'user_agent', 'screen_w', 'screen_h',
+        # Demographics
+        'demo_age', 'demo_gender', 'demo_relationship', 'demo_ethnicity', 'demo_race', 'demo_race_other',
+        # Objective SES
+        'ses_education', 'ses_household_income', 'ses_personal_income', 'ses_employment', 'ses_job_title',
+        # Subjective SES ladders
+        'ladder_education', 'ladder_money', 'ladder_job',
+        # Sociometric status
+        'sociometric_respect', 'sociometric_admired', 'sociometric_important',
+        # Trait: SBPS (Struk et al., 2017)
+        'bps_1','bps_2','bps_3','bps_4','bps_5','bps_6','bps_7','bps_8','bps_order',
+        # Trait: MLQ-Presence (Steger et al., 2006)
+        'mlq_1','mlq_2','mlq_3','mlq_4','mlq_5','mlq_order',
+        # Trait: SPA (Yamaguchi et al., 2025)
+        'spa_1','spa_2','spa_3','spa_4','spa_5','spa_order',
+        # Trait: BPNS autonomy (Deci & Ryan, 2000)
+        'bpns_1','bpns_2','bpns_3','bpns_4','bpns_5','bpns_6','bpns_7','bpns_order',
+        # Trait: BPNSF autonomy sat/frust (Chen et al., 2015)
+        'bpnsf_1','bpnsf_2','bpnsf_3','bpnsf_4','bpnsf_5','bpnsf_6','bpnsf_7','bpnsf_8','bpnsf_order',
+        # Trait: GSE (Schwarzer & Jerusalem, 1995)
+        'se_1','se_2','se_3','se_4','se_5','se_6','se_7','se_8','se_9','se_10','se_order',
+        'scale_block_order',
+        # Writing
+        'writing_text', 'writing_time_sec', 'writing_charcount',
+        # Manipulation check: state meaning (MLQ-P state)
+        'statemean_1','statemean_2','statemean_3','statemean_4','statemean_5',
+        # Manipulation check: state autonomy (BPNSFS)
+        'stateauto_1','stateauto_2','stateauto_3','stateauto_4',
+        'stateauto_5','stateauto_6','stateauto_7','stateauto_8',
+        'mancheck_order',
+        # Boring task
+        'boringtask_duration_sec', 'transcription_text', 'transcription_accuracy', 'transcription_charcount',
+        # Outcome: MSBS-8 (Hunter et al., 2015)
+        'msbs_1','msbs_2','msbs_3','msbs_4','msbs_5','msbs_6','msbs_7','msbs_8',
+        # Timestamps
+        'ts_consent','ts_demographics','ts_ladders','ts_traits',
+        'ts_writing','ts_mancheck','ts_boring_task','ts_outcome','ts_debrief',
+    ]
+
     wb = openpyxl.Workbook()
 
     # ── Master sheet ─────────────────────────────────────
     ws = wb.active
     ws.title = 'Data'
     if rows:
-        headers = list(rows[0].keys())
+        # Only export columns that exist in the actual DB result
+        db_keys = set(rows[0].keys())
+        headers = [c for c in EXPORT_COLUMNS if c in db_keys]
         ws.append(headers)
         for row in rows:
             ws.append([row[h] for h in headers])

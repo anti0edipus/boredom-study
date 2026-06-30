@@ -218,7 +218,7 @@ def get_all_participants(db):
 def get_condition_counts(db):
     rows = db.execute(
         "SELECT condition, COUNT(*) as n, SUM(completed) as completed "
-        "FROM participants WHERE test_mode = 0 AND condition IS NOT NULL "
+        "FROM participants WHERE condition IS NOT NULL "
         "GROUP BY condition"
     ).fetchall()
     return {r['condition']: {'n': r['n'], 'completed': r['completed'] or 0} for r in rows}
@@ -228,7 +228,7 @@ def get_summary_stats(db):
     row = db.execute(
         "SELECT COUNT(*) as total, SUM(completed) as completed, "
         "AVG(CASE WHEN completed=1 THEN total_duration_sec END) as avg_duration "
-        "FROM participants WHERE test_mode = 0"
+        "FROM participants"
     ).fetchone()
     return dict(row)
 
