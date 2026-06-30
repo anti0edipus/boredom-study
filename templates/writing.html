@@ -14,8 +14,7 @@
 
   <div class="form-group">
     <textarea id="writing_text" name="writing_text" rows="12"
-      placeholder="Write your response here…" required
-      minlength="{{ min_chars }}"></textarea>
+      placeholder="Write your response here…" required></textarea>
     <div class="writing-feedback">
       <span id="char-count">0</span> / {{ min_chars }} characters minimum &nbsp;|&nbsp;
       Time remaining: <span id="timer-display">{{ min_time // 60 }}:{{ '%02d' % (min_time % 60) }}</span>
