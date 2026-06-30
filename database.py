@@ -1,10 +1,13 @@
+import os
 import sqlite3
 import json
 from config import Config
 
 
 def get_db(path=None):
-    db = sqlite3.connect(path or Config.DATABASE_PATH)
+    target = path or Config.DATABASE_PATH
+    os.makedirs(os.path.dirname(target) or '.', exist_ok=True)
+    db = sqlite3.connect(target)
     db.row_factory = sqlite3.Row
     db.execute('PRAGMA journal_mode=WAL')
     return db
