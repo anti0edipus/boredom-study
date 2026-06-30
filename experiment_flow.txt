@@ -10,7 +10,7 @@ of writing manipulations influence subsequent boredom experience. Participants a
 recruited via Prolific and randomly assigned to one of three conditions: Meaning,
 Autonomy, or Control.
 
-Estimated duration: 35-45 minutes
+Estimated duration: 37-44 minutes
 
 
 STEP-BY-STEP FLOW
@@ -27,12 +27,15 @@ browser information.
 
 1. CONSENT
 
-The participant is shown the full IRB consent text. They must tick an explicit checkbox
-confirming they consent before the "Begin" button activates. Closing the window at this
-stage saves no data beyond a refusal flag.
+The participant is shown the full IRB consent text and must:
+  - Enter their Prolific ID in a text box (saved as prolific_id_entry)
+  - Tick an explicit checkbox confirming they consent
+
+The "Begin" button is disabled until both fields are completed. Closing the window at
+this stage saves no data beyond a refusal flag.
 
 
-PAGE 1. DEMOGRAPHICS & SES
+PAGE 1. DEMOGRAPHICS
 
   Variable                 Format
   -----------------------  -------------------------------------------------------
@@ -47,21 +50,27 @@ PAGE 1. DEMOGRAPHICS & SES
   Employment               Multi-select checkboxes (6 options)
   Job title                Free text (optional)
 
+
+PAGE 2. SUBJECTIVE SES & SOCIOMETRIC STATUS
+
   Subjective SES Ladders — Adler et al. (2000); 10=most/best, 1=least/worst
   -------------------------------------------------------------------------
-  ladder_education         How much education (visual ladder, 1–10)
-  ladder_money             How much money (visual ladder, 1–10)
-  ladder_job               How good a job (visual ladder, 1–10)
+  ladder_education         How much education (visual ladder, 1-10)
+  ladder_money             How much money (visual ladder, 1-10)
+  ladder_job               How good a job (visual ladder, 1-10)
 
   Sociometric Status Ladders — Mahadevan et al. (2021); 10=most, 1=least
   -----------------------------------------------------------------------
-  sociometric_respect      How respected (visual ladder, 1–10)
-  sociometric_admired      How admired (visual ladder, 1–10)
-  sociometric_important    How important (visual ladder, 1–10)
+  sociometric_respect      How respected (visual ladder, 1-10)
+  sociometric_admired      How admired (visual ladder, 1-10)
+  sociometric_important    How important (visual ladder, 1-10)
+
+  All six items use a visual sloped ladder graphic with clickable rungs.
+
 
 CONDITION ASSIGNMENT (invisible to participant)
 
-Between the demographics page and the trait scales, the server silently assigns the
+Between Page 2 (ladders) and Page 3 (trait scales), the server silently assigns the
 participant to one of three conditions using permuted-block randomization (block sizes
 randomly drawn from {3, 6, 9}). The assignment is recorded in the database before the
 participant sees any condition-specific content. The participant is never informed of
@@ -69,14 +78,14 @@ their condition. Refreshing the browser does not change the assignment.
 
   Condition   Description
   ----------  ----------------------------------------------------------------
-  Meaning     Write about intrinsic, self-defining life goals and what makes
-              life meaningful
-  Autonomy    Recall and write about a recent freely chosen, self-endorsed
-              action
+  Meaning     Reflect on and write about what makes life meaningful; prompted
+              to recall a specific meaningful experience
+  Autonomy    Reflect on and write about the ways life reflects own free
+              choices and values
   Control     Describe a typical morning routine in detail (neutral task)
 
 
-PAGE 2. TRAIT SCALES
+PAGE 3. TRAIT SCALES
 
 Six questionnaire blocks presented in randomized block order (each participant sees
 them in a different sequence). Within each scale, item order is also randomized.
@@ -84,29 +93,29 @@ The display order is recorded in the data for analysis.
 
   Scale                                         Items   Response format
   --------------------------------------------  ------  -----------------------------------------------
-  Short Boredom Proneness Scale (SBPS)          8       7-point (Strongly disagree – Strongly agree)
+  Short Boredom Proneness Scale (SBPS)          8       7-point (Strongly disagree - Strongly agree)
     Struk et al. (2017)
-  Presence of Meaning in Life (MLQ-P)           5       7-point (Absolutely untrue – Absolutely true)
+  Presence of Meaning in Life (MLQ-P)           5       7-point (Absolutely untrue - Absolutely true)
     Steger et al. (2006)
-  Subjective Personal Agency (SPA)              5       5-point (Strongly disagree – Strongly agree)
+  Subjective Personal Agency (SPA)              5       5-point (Strongly disagree - Strongly agree)
     Yamaguchi et al. (2025)
-  BPNS Autonomy Subscale                        7       7-point (Not at all true – Very true)
+  BPNS Autonomy Subscale                        7       7-point (Not at all true - Very true)
     Deci & Ryan (2000); Johnston & Finney (2010)
-  BPNSF Autonomy Satisfaction & Frustration     8       5-point (Not true at all – Completely true)
+  BPNSF Autonomy Satisfaction & Frustration     8       5-point (Not true at all - Completely true)
     Chen et al. (2015)
-  General Self-Efficacy Scale (GSE)             10      4-point (Not true at all – Exactly true)
+  General Self-Efficacy Scale (GSE)             10      4-point (Not true at all - Exactly true)
     Schwarzer & Jerusalem (1995)
 
-One attention check item is embedded in the SBPS block ("Please select '4 – Somewhat
+One attention check item is embedded in the SBPS block ("Please select '4 - Somewhat
 agree' for this item"). Participants who fail this item are flagged in the data
 (attention_check_pass = 0) but are not excluded automatically — exclusion decisions
 are left to the researcher at the analysis stage.
 
 
-PAGE 3. WRITING TASK
+PAGE 4. WRITING TASK
 
-A large text box is shown with a condition-specific prompt (see above). Two criteria
-must both be met before the participant can continue:
+A large text box is shown with a condition-specific prompt. Two criteria must both be
+met before the participant can continue:
 
   - Minimum time on page: 3 minutes (180 seconds). A countdown timer is visible;
     the submit button is disabled until it reaches zero.
@@ -115,23 +124,46 @@ must both be met before the participant can continue:
 
 Data recorded: full essay text, time spent on page (seconds), character count.
 
+Prompts by condition:
 
-PAGE 4. MANIPULATION CHECK
+  Meaning:  Participants are given a definition of meaning in life, then asked to
+            think for a moment about what makes their life meaningful. They write
+            three keywords capturing this, then explain in detail why their life
+            is meaningful, with as many concrete details as possible.
 
-8 items measuring current psychological state, presented in randomized order immediately
-after the writing task and before the boring task:
+  Autonomy: Participants are given a definition of autonomy, then asked to think
+            about the ways their life reflects their own free choices. They write
+            three keywords capturing this, then explain in detail why their life
+            feels like their own free choice, with as many concrete details as
+            possible.
 
-  Subscale          Items   Response format
-  ----------------  ------  --------------------------------
-  State Meaning     4       7-point Likert
-  State Autonomy    4       7-point Likert
+  Control:  Participants are asked to think about a typical morning routine. They
+            write three keywords capturing it, then describe their morning in detail,
+            step by step, with as many concrete details as possible.
+
+
+PAGE 5. MANIPULATION CHECK
+
+13 items measuring current psychological state, presented in two blocks in randomized
+order immediately after the writing task and before the boring task:
+
+  Subscale                                    Items   Response format
+  ------------------------------------------  ------  --------------------------------
+  State Meaning — MLQ-P state version         5       7-point (Absolutely untrue -
+    Steger et al. (2006), state-adapted                Absolutely true)
+  State Autonomy — BPNSFS autonomy subscale   8       5-point (Not true at all -
+    Chen et al. (2015), state-adapted                  Completely true)
+    Items 1-4: autonomy satisfaction
+    Items 5-8: autonomy frustration (reverse)
+
+Block order (mean/auto) is randomized per participant.
 
 This check allows verification that the writing manipulation successfully induced the
 intended psychological state and supports analysis of the meaning x autonomy double
 dissociation.
 
 
-PAGE 5. BORING TASK — BOREDOM INDUCTION
+PAGE 6. BORING TASK — BOREDOM INDUCTION
 
 A 5-minute text transcription task:
 
@@ -150,31 +182,32 @@ Data recorded:
   --------------------------  ---------------------------------------------------
   boringtask_duration_sec     Actual time on task (seconds)
   transcription_text          Full text typed by participant
-  transcription_accuracy      Similarity to target text (0.0–1.0)
+  transcription_accuracy      Similarity to target text (0.0-1.0)
   transcription_charcount     Character count of typed text
 
 
-PAGE 6. FINAL SURVEY — PRIMARY OUTCOME MEASURE
+PAGE 7. FINAL SURVEY — PRIMARY OUTCOME MEASURE
 
 The Multidimensional State Boredom Scale short form (MSBS-8; Hunter et al., 2015) —
 8 items, 7-point Likert scale. Items are presented in randomized order.
-
-Example items: "I feel bored.", "Time is passing by slower than usual.",
-"I am wasting time that would be better spent on something else."
 
 This is the primary dependent variable: the hypothesis is that the meaning and/or
 autonomy writing conditions will reduce state boredom relative to the control condition
 following the boring task.
 
 
-PAGE 7. DEBRIEF & COMPLETION
+PAGE 8. DEBRIEF & COMPLETION
 
 The participant reads the full IRB-approved debrief text explaining the study's purpose.
+Before submitting, they are offered an optional checkbox to express interest in being
+invited to a follow-up survey (saved as followup_interest: 1=yes, 0=no/unchecked).
+
 They click "Submit & return to Prolific", which:
 
-  1. Marks their record as completed in the database
-  2. Records the finish timestamp and computes total study duration
-  3. Redirects them to the Prolific completion URL, triggering their payment
+  1. Records followup_interest
+  2. Marks their record as completed in the database
+  3. Records the finish timestamp and computes total study duration
+  4. Redirects them to the Prolific completion URL, triggering their payment
 
 
 APPROXIMATE TIMELINE
@@ -183,14 +216,15 @@ APPROXIMATE TIMELINE
   Stage                                    Estimated time
   ---------------------------------------  ----------------------
   Consent                                  1 min
-  Demographics & SES (Page 1)              5-6 min
-  Trait scales — 6 instruments (Page 2)    15-18 min
-  Writing task (Page 3)                    5-6 min (3 min min.)
-  Manipulation check (Page 4)              2 min
-  Boring task / transcription (Page 5)     5 min (fixed)
-  Final survey / MSBS (Page 6)             2 min
-  Debrief (Page 7)                         1 min
-  TOTAL                                    ~36-41 min
+  Demographics (Page 1)                    4-5 min
+  SES Ladders (Page 2)                     2-3 min
+  Trait scales — 6 instruments (Page 3)    15-18 min
+  Writing task (Page 4)                    5-6 min (3 min min.)
+  Manipulation check (Page 5)              3 min
+  Boring task / transcription (Page 6)     5 min (fixed)
+  Final survey / MSBS (Page 7)             2 min
+  Debrief (Page 8)                         1 min
+  TOTAL                                    ~38-44 min
 
 
 DROPOUT HANDLING
@@ -220,6 +254,8 @@ KEY VARIABLES SUMMARY
   Variable group              Columns in dataset                          Role
   --------------------------  ------------------------------------------  --------------------
   Condition                   condition                                   Independent variable
+  Prolific ID (self-reported) prolific_id_entry                          Data quality check
+  Follow-up interest          followup_interest                          Follow-up recruitment
   Boredom proneness           bps_1 to bps_8                             Trait covariate
   Presence of meaning         mlq_1 to mlq_5                             Trait covariate
   Subjective personal agency  spa_1 to spa_5                             Trait covariate
@@ -235,13 +271,13 @@ KEY VARIABLES SUMMARY
                               sociometric_important
   Writing                     writing_text, writing_charcount,           Manipulation check
                               writing_time_sec
-  State meaning               statemean_1 to statemean_4                 Manipulation check
-  State autonomy              stateauto_1 to stateauto_4                 Manipulation check
+  State meaning               statemean_1 to statemean_5                 Manipulation check
+  State autonomy              stateauto_1 to stateauto_8                 Manipulation check
   Transcription               transcription_text, transcription_accuracy, Task engagement
                               transcription_charcount
   State boredom               msbs_1 to msbs_8                           PRIMARY OUTCOME
   Attention check             attention_check_pass                        Data quality flag
-  Timing                      ts_consent, ts_traits, ts_demographics,    Process data
-                              ts_writing, ts_mancheck, ts_boring_task,
-                              ts_outcome, ts_debrief,
+  Timing                      ts_consent, ts_demographics, ts_ladders,   Process data
+                              ts_traits, ts_writing, ts_mancheck,
+                              ts_boring_task, ts_outcome, ts_debrief,
                               total_duration_sec

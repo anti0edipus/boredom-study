@@ -59,6 +59,7 @@
 
   function skipTimer() {
     timeUp = true;
+    charsOk = true;
     clearInterval(interval);
     timerEl.textContent = 'Skipped';
     document.getElementById('skip-btn').disabled = true;
