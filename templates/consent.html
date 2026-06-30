@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Information Sheet &amp; Consent</h1>
+
+<div class="consent-box">
+  <p><strong>[PLACEHOLDER — paste your full IRB-approved consent text here.]</strong></p>
+  <p>This study investigates everyday psychological experience. It takes approximately 30–40 minutes.
+     Participation is voluntary. You may withdraw at any time by closing your browser.</p>
+  <p>Your data will be stored securely and identified only by your Prolific ID.
+     Results will be reported at the group level only.</p>
+  <p>This study has been approved by [PLACEHOLDER — insert IRB name and protocol number].</p>
+  <p>Questions? Contact [PLACEHOLDER — researcher email].</p>
+</div>
+
+<form method="post">
+  <input type="hidden" name="screen_w" id="screen_w">
+  <input type="hidden" name="screen_h" id="screen_h">
+
+  <div class="form-group checkbox-group">
+    <label>
+      <input type="checkbox" id="consent_check" required>
+      I have read and understood the information above, I am 18 years of age or older,
+      and I freely consent to participate in this study.
+    </label>
+  </div>
+
+  <button type="submit" id="consent_btn" class="btn btn-primary" disabled>
+    I consent — begin the study
+  </button>
+</form>
+
+<script>
+  document.getElementById('screen_w').value = screen.width;
+  document.getElementById('screen_h').value = screen.height;
+  document.getElementById('consent_check').addEventListener('change', function () {
+    document.getElementById('consent_btn').disabled = !this.checked;
+  });
+</script>
+{% endblock %}

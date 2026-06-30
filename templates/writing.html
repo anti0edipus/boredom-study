@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Study – Page 3{% endblock %}
+{% block content %}
+<h1>Page 3</h1>
+
+<div class="writing-prompt-box">
+  <p>{{ prompt }}</p>
+</div>
+
+<form method="post" id="writing-form">
+  <input type="hidden" name="writing_time_sec" id="writing_time_sec" value="0">
+
+  <div class="form-group">
+    <textarea id="writing_text" name="writing_text" rows="12"
+      placeholder="Write your response here…" required
+      minlength="{{ min_chars }}"></textarea>
+    <div class="writing-feedback">
+      <span id="char-count">0</span> / {{ min_chars }} characters minimum &nbsp;|&nbsp;
+      Time remaining: <span id="timer-display">{{ min_time // 60 }}:{{ '%02d' % (min_time % 60) }}</span>
+    </div>
+  </div>
+
+  <button type="submit" id="writing-submit" class="btn btn-primary" disabled>
+    Continue &rarr;
+  </button>
+  <button type="button" id="skip-btn" class="btn btn-secondary testing-only"
+          onclick="skipTimer()">Skip timer (testing)</button>
+</form>
+
+<script>
+  const MIN_CHARS = {{ min_chars }};
+  const MIN_TIME  = {{ min_time }};
+  const startTime = Date.now();
+
+  let timeUp    = false;
+  let charsOk   = false;
+
+  function updateSubmit() {
+    document.getElementById('writing-submit').disabled = !(timeUp && charsOk);
+  }
+
+  // Countdown timer
+  const timerEl = document.getElementById('timer-display');
+  const interval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const remaining = Math.max(0, MIN_TIME - elapsed);
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    timerEl.textContent = m + ':' + String(s).padStart(2, '0');
+    if (remaining === 0 && !timeUp) {
+      timeUp = true;
+      clearInterval(interval);
+      timerEl.textContent = 'Done';
+      updateSubmit();
+    }
+  }, 500);
+
+  function skipTimer() {
+    timeUp = true;
+    clearInterval(interval);
+    timerEl.textContent = 'Skipped';
+    document.getElementById('skip-btn').disabled = true;
+    updateSubmit();
+  }
+
+  // Char counter
+  const textarea = document.getElementById('writing_text');
+  const charCountEl = document.getElementById('char-count');
+  textarea.addEventListener('input', () => {
+    const n = textarea.value.length;
+    charCountEl.textContent = n;
+    charsOk = n >= MIN_CHARS;
+    updateSubmit();
+  });
+
+  // Record elapsed time on submit
+  document.getElementById('writing-form').addEventListener('submit', () => {
+    const elapsed = (Date.now() - startTime) / 1000;
+    document.getElementById('writing_time_sec').value = elapsed.toFixed(1);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Study – Page 6{% endblock %}
+{% block content %}
+<h1>Page 6</h1>
+<h2 class="scale-title">Multidimensional State Boredom Scale — Short Form (MSBS-8)
+  <span class="scale-citation">— Hunter et al. (2015) — testing label</span></h2>
+<p>Please indicate how you feel <strong>right now</strong>, at this moment.</p>
+<p class="anchor-line"><strong>1</strong> = Not at all &nbsp;·&nbsp; <strong>7</strong> = Extremely</p>
+
+<form method="post" id="outcome-form" data-validate>
+
+  {% for idx in order %}
+  <div class="item-row">
+    <p class="item-text">{{ items[idx - 1] }}</p>
+    <div class="likert-7">
+      {% for v in range(1, 8) %}
+      <label class="likert-label">
+        <input type="radio" name="msbs_{{ idx }}" value="{{ v }}" required>
+        <span>{{ v }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">Continue &rarr;</button>
+</form>
+{% endblock %}

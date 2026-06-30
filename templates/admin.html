@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="container">
+  <h1>Study Admin Panel</h1>
+  <a href="{{ url_for('admin_logout') }}" class="logout-link">Log out</a>
+
+  {% if request.args.get('deleted') %}
+  <div class="flash flash-success">All data deleted and randomization reset.</div>
+  {% endif %}
+  {% if request.args.get('error') %}
+  <div class="flash flash-error">{{ request.args.get('error') }}</div>
+  {% endif %}
+
+  <section class="admin-section">
+    <h2>Overall</h2>
+    <table class="admin-table">
+      <tr><th>Total participants</th><td>{{ stats.total or 0 }}</td></tr>
+      <tr><th>Completed</th><td>{{ stats.completed or 0 }}</td></tr>
+      <tr>
+        <th>Avg completion time</th>
+        <td>
+          {% if stats.avg_duration %}
+            {{ '%.1f'|format(stats.avg_duration / 60) }} min
+          {% else %}
+            &mdash;
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="admin-section">
+    <h2>N per Condition</h2>
+    <table class="admin-table">
+      <thead><tr><th>Condition</th><th>Assigned</th><th>Completed</th></tr></thead>
+      <tbody>
+        {% for cond in ['meaning', 'autonomy', 'control'] %}
+        <tr>
+          <td>{{ cond }}</td>
+          <td>{{ counts.get(cond, {}).get('n', 0) }}</td>
+          <td>{{ counts.get(cond, {}).get('completed', 0) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="admin-section">
+    <h2>Downloads</h2>
+    <a href="{{ url_for('export_xlsx') }}" class="btn btn-primary">Download data (.xlsx)</a>
+    <a href="{{ url_for('export_db') }}"  class="btn btn-secondary">Download SQLite backup</a>
+  </section>
+
+  <section class="admin-section danger-zone">
+    <h2>Danger Zone</h2>
+    <p>This permanently deletes <strong>all participant data</strong> and resets the
+       randomization counter. There is no undo. Download a backup first if needed.</p>
+
+    <button class="btn btn-danger" onclick="document.getElementById('delete-form').style.display='block'; this.style.display='none'">
+      Delete all data&hellip;
+    </button>
+
+    <form id="delete-form" method="post" action="{{ url_for('delete_all') }}" style="display:none; margin-top:1rem;">
+      <div class="form-group">
+        <label for="confirm-input">Type <strong>DELETE</strong> to confirm:</label>
+        <input type="text" id="confirm-input" name="confirm" autocomplete="off"
+               placeholder="DELETE" style="max-width:200px;">
+      </div>
+      <button type="submit" class="btn btn-danger">Permanently delete all data</button>
+      <button type="button" class="btn btn-secondary"
+              onclick="document.getElementById('delete-form').style.display='none';
+                       document.querySelector('.btn-danger').style.display='inline-block'">
+        Cancel
+      </button>
+    </form>
+  </section>
+
+</main>
+</body>
+</html>

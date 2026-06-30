@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Study – Page 5{% endblock %}
+{% block body_class %}transcription-page{% endblock %}
+{% block content %}
+<h1>Page 5</h1>
+
+<p>Please type out the text shown in the image <strong>as accurately as you can</strong>,
+   including all codes and punctuation.</p>
+
+<form method="post" id="transcription-form">
+  <input type="hidden" name="time_sec" id="time_sec" value="0">
+
+  <div class="transcription-layout">
+
+    <!-- Left: scrollable image -->
+    <div class="transcription-image-col">
+      <img src="{{ url_for('static', filename='boring_task_image.png') }}"
+           alt="Text to transcribe"
+           draggable="false"
+           class="transcription-image">
+    </div>
+
+    <!-- Right: textarea + timer + buttons -->
+    <div class="transcription-input-col">
+      <textarea id="transcription_text" name="transcription_text"
+        placeholder="Type the text from the image here…" required
+        spellcheck="false" autocorrect="off" autocomplete="off"></textarea>
+
+      <div class="transcription-controls">
+        <div class="writing-feedback">
+          Time remaining: <span id="timer-display">
+            {{ min_time // 60 }}:{{ '%02d' % (min_time % 60) }}
+          </span>
+        </div>
+        <div>
+          <button type="submit" id="submit-btn" class="btn btn-primary" disabled>
+            Continue &rarr;
+          </button>
+          <button type="button" id="skip-btn" class="btn btn-secondary testing-only"
+                  onclick="skipTimer()">Skip timer (testing)</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<script>
+  const MIN_TIME = {{ min_time }};
+  const startTime = Date.now();
+
+  const timerEl = document.getElementById('timer-display');
+  const btn     = document.getElementById('submit-btn');
+
+  const tick = setInterval(() => {
+    const elapsed   = Math.floor((Date.now() - startTime) / 1000);
+    const remaining = Math.max(0, MIN_TIME - elapsed);
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    timerEl.textContent = m + ':' + String(s).padStart(2, '0');
+    if (remaining === 0) {
+      clearInterval(tick);
+      timerEl.textContent = 'Done';
+      btn.disabled = false;
+    }
+  }, 500);
+
+  function skipTimer() {
+    clearInterval(tick);
+    timerEl.textContent = 'Skipped';
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('skip-btn').disabled = true;
+  }
+
+  document.getElementById('transcription-form').addEventListener('submit', () => {
+    document.getElementById('time_sec').value =
+      ((Date.now() - startTime) / 1000).toFixed(1);
+  });
+
+  document.querySelector('.transcription-image').addEventListener('contextmenu', e => e.preventDefault());
+</script>
+{% endblock %}

@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block title %}Study – Page 1{% endblock %}
+{% block content %}
+<h1>Page 1</h1>
+<p>A few questions about your background. You may select "Prefer not to answer" where offered.</p>
+
+<form method="post" id="demo-form" data-validate>
+
+  <!-- ── Ladder macro (reused for all 6 ladders) ──────────────────────────
+       Rungs: 1 (top = most/best) → 10 (bottom = least/worst), per instrument.
+  ──────────────────────────────────────────────────────────────────────── -->
+  {% macro ladder_widget(field, top_label, bottom_label) %}
+  <div class="ladder-widget">
+    <div class="ladder-end-label top-label">&#9650; {{ top_label }}</div>
+    <div class="ladder-graphic">
+      <div class="ladder-rail"></div>
+      <div class="ladder-rungs">
+        {% for v in range(10, 0, -1) %}
+        <label class="visual-rung">
+          <input type="radio" name="{{ field }}" value="{{ v }}" required>
+          <span class="visual-rung-bar">{{ v }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <div class="ladder-rail"></div>
+    </div>
+    <div class="ladder-end-label bottom-label">&#9660; {{ bottom_label }}</div>
+  </div>
+  {% endmacro %}
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       SECTION: Demographics (testing label)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <h2 class="scale-title">Demographics <span class="scale-citation">— testing label</span></h2>
+
+  <div class="form-group">
+    <label>What is your gender?</label>
+    <div class="radio-group">
+      {% for opt in ['Male', 'Female', 'Non-binary / third gender', 'Prefer not to say'] %}
+      <label><input type="radio" name="demo_gender" value="{{ opt }}" required> {{ opt }}</label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="demo_age">What is your age?</label>
+    <input type="number" id="demo_age" name="demo_age" min="18" max="120"
+           placeholder="Your age in years" required>
+  </div>
+
+  <div class="form-group">
+    <label>What is your relationship / marital status?</label>
+    <div class="radio-group">
+      {% for opt in ['Single', 'In a relationship', 'Engaged', 'Married', 'Widowed',
+                     'Divorced', 'Separated', 'Never married',
+                     'In a civil partnership / civil union or similar', 'Rather not say'] %}
+      <label><input type="radio" name="demo_relationship" value="{{ opt }}" required> {{ opt }}</label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>What is your ethnicity?</label>
+    <div class="radio-group">
+      {% for opt in ['Hispanic or Latino', 'Not Hispanic or Latino', 'Prefer not to answer'] %}
+      <label><input type="radio" name="demo_ethnicity" value="{{ opt }}" required> {{ opt }}</label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>What is your race? <span class="field-hint">(Select all that apply)</span></label>
+    <div class="checkbox-group-multi">
+      {% for opt in ['American Indian or Alaska Native', 'Asian', 'Black or African American',
+                     'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer not to answer'] %}
+      <label><input type="checkbox" name="demo_race" value="{{ opt }}"> {{ opt }}</label>
+      {% endfor %}
+      <label>
+        <input type="checkbox" name="demo_race" value="Other" id="race_other_check">
+        Other (please specify):
+        <input type="text" name="demo_race_other" id="race_other_text"
+               style="margin-left:0.5rem; width:180px;" disabled>
+      </label>
+    </div>
+  </div>
+
+  {% set income_bands = [
+    'Less than $10,000', '$10,000 – $15,999', '$16,000 – $19,999',
+    '$20,000 – $29,999', '$30,000 – $39,999', '$40,000 – $49,999',
+    '$50,000 – $59,999', '$60,000 – $69,999', '$70,000 – $79,999',
+    '$80,000 – $89,999', '$90,000 – $99,999', '$100,000 – $149,999',
+    'More than $150,000'
+  ] %}
+
+  <div class="form-group">
+    <label for="ses_household_income">
+      What is your approximate yearly <strong>household</strong> income?
+      <span class="field-hint">(The income of all members of your household combined.)</span>
+    </label>
+    <select id="ses_household_income" name="ses_household_income" required>
+      <option value="" disabled selected>Select…</option>
+      {% for i, band in enumerate(income_bands) %}
+      <option value="{{ i + 1 }}">{{ band }}</option>
+      {% endfor %}
+      <option value="99">Prefer not to answer</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="ses_personal_income">
+      What is your approximate yearly <strong>personal</strong> income?
+      <span class="field-hint">(Your income only, not including other household members.)</span>
+    </label>
+    <select id="ses_personal_income" name="ses_personal_income" required>
+      <option value="" disabled selected>Select…</option>
+      {% for i, band in enumerate(income_bands) %}
+      <option value="{{ i + 1 }}">{{ band }}</option>
+      {% endfor %}
+      <option value="99">Prefer not to answer</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="ses_education">What is the highest level of education that you received?</label>
+    <select id="ses_education" name="ses_education" required>
+      <option value="" disabled selected>Select…</option>
+      <option value="1">No schooling completed</option>
+      <option value="2">Grades 1 through 11</option>
+      <option value="3">12th grade — no diploma</option>
+      <option value="4">Regular high school diploma</option>
+      <option value="5">GED or alternative credential</option>
+      <option value="6">Some college credit, but no degree</option>
+      <option value="7">Associate degree (e.g. AA, AS)</option>
+      <option value="8">Bachelor's degree (e.g. BA, BS)</option>
+      <option value="9">Master's degree (e.g. MA, MS, MEng, MBA)</option>
+      <option value="10">Professional degree beyond bachelor's (e.g. MD, DDS, JD)</option>
+      <option value="11">Doctorate degree (e.g. PhD, EdD)</option>
+      <option value="99">Prefer not to answer</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Are you currently in employment or education?
+      <span class="field-hint">(Select all that apply)</span>
+    </label>
+    <div class="checkbox-group-multi">
+      {% for opt in ['Full-time employment', 'Part-time employment', 'Homemaker',
+                     'In education', 'Retired', 'None of the above'] %}
+      <label><input type="checkbox" name="ses_employment" value="{{ opt }}"> {{ opt }}</label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="ses_job_title">What is your job title?
+      <span class="field-hint">(Leave blank if not applicable.)</span>
+    </label>
+    <input type="text" id="ses_job_title" name="ses_job_title"
+           placeholder="e.g. Teacher, Software engineer, Student…">
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       SECTION: Subjective SES — Adler et al. (2000)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="ladder-section">
+    <h2 class="scale-title">Subjective SES Ladders
+      <span class="scale-citation">— Adler et al. (2000) — testing label</span>
+    </h2>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how much education people have in society.
+        At the top of the ladder are the people who have the most education. At the bottom
+        of the ladder are the people who have the least education. Please select the number
+        corresponding to that rung on the "ladder" that best represents how much education
+        you think you have.</label>
+      {{ ladder_widget('ladder_education', '10 (most education)', '1 (least education)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how much money people have in society.
+        At the top of the ladder are the people who have the most money. At the bottom of
+        the ladder are the people who have the least money. Please select the number
+        corresponding to that rung on the "ladder" that best represents how much money
+        you think you have.</label>
+      {{ ladder_widget('ladder_money', '10 (best off)', '1 (worst off)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how good of a job people have in society.
+        At the top of the ladder are the people who have the best jobs. At the bottom of
+        the ladder are the people who have the worst jobs or no job. Please select the number
+        corresponding to that rung on the "ladder" that best represents how good of a job
+        you think you have.</label>
+      {{ ladder_widget('ladder_job', '10 (best job)', '1 (worst job)') }}
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       SECTION: Sociometric Status — Mahadevan et al. (2021)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="ladder-section">
+    <h2 class="scale-title">Sociometric Status
+      <span class="scale-citation">— Mahadevan et al. (2021) — testing label</span>
+    </h2>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how respected people are in society.
+        At the top of the ladder are the people who are the most respected. At the bottom
+        of the ladder are the people who are the least respected. Please select the number
+        corresponding to that rung on the "ladder" that best represents how respected
+        you think you are.</label>
+      {{ ladder_widget('sociometric_respect', '10 (most respected)', '1 (least respected)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how admired people are in society.
+        At the top of the ladder are the people who are the most admired. At the bottom
+        of the ladder are the people who are the least admired. Please select the number
+        corresponding to that rung on the "ladder" that best represents how admired
+        you think you are.</label>
+      {{ ladder_widget('sociometric_admired', '10 (most admired)', '1 (least admired)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how important people are in society.
+        At the top of the ladder are the people who are the most important. At the bottom
+        of the ladder are the people who are the least important. Please select the number
+        corresponding to that rung on the "ladder" that best represents how important
+        you think you are.</label>
+      {{ ladder_widget('sociometric_important', '10 (most important)', '1 (least important)') }}
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Continue &rarr;</button>
+</form>
+
+<script>
+  document.getElementById('race_other_check').addEventListener('change', function () {
+    document.getElementById('race_other_text').disabled = !this.checked;
+    if (!this.checked) document.getElementById('race_other_text').value = '';
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Study{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='validation.js') }}" defer></script>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% if prog %}
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" style="width: {{ (prog.step / prog.total * 100)|int }}%"></div>
+  </div>
+  <p class="progress-label">Step {{ prog.step }} of {{ prog.total }}: {{ prog.label }}</p>
+  {% endif %}
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>If you wish to withdraw from this study, close this window. Your data will not be saved.</p>
+  </footer>
+</body>
+</html>
