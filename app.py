@@ -21,21 +21,23 @@ app.config.from_object(Config)
 app.jinja_env.globals['enumerate'] = enumerate
 
 # ── Page order used for progress display ──────────────────────────────────────
-PAGE_STEPS = ['consent', 'demographics', 'traits', 'writing',
+PAGE_STEPS = ['consent', 'demographics', 'ladders', 'traits', 'writing',
               'mancheck', 'boring_task', 'outcome', 'debrief']
 STEP_LABELS = {
     'consent':      'Consent',
     'demographics': 'Page 1',
-    'traits':       'Page 2',
-    'writing':      'Page 3',
-    'mancheck':     'Page 4',
-    'boring_task':  'Page 5',
-    'outcome':      'Page 6',
-    'debrief':      'Page 7',
+    'ladders':      'Page 2',
+    'traits':       'Page 3',
+    'writing':      'Page 4',
+    'mancheck':     'Page 5',
+    'boring_task':  'Page 6',
+    'outcome':      'Page 7',
+    'debrief':      'Page 8',
 }
 NEXT_PAGE = {
     'consent':      'demographics',
-    'demographics': 'traits',
+    'demographics': 'ladders',
+    'ladders':      'traits',
     'traits':       'writing',
     'writing':      'mancheck',
     'mancheck':     'boring_task',
@@ -64,7 +66,7 @@ def close_db(exc):
 
 # ── Progress helper ────────────────────────────────────────────────────────────
 def progress(current_step):
-    visible = ['consent', 'demographics', 'traits', 'writing', 'mancheck', 'boring_task', 'outcome', 'debrief']
+    visible = ['consent', 'demographics', 'ladders', 'traits', 'writing', 'mancheck', 'boring_task', 'outcome', 'debrief']
     try:
         idx = visible.index(current_step if current_step in visible else 'demographics')
     except ValueError:
@@ -229,6 +231,32 @@ ATTENTION_CHECK_TRAITS = {
 
 
 @app.route('/page/2', methods=['GET', 'POST'])
+@require_step('ladders')
+def ladders():
+    p = get_current_participant()
+    if request.method == 'POST':
+        data = {
+            'ts_ladders':            utcnow(),
+            'current_step':          'traits',
+            # Subjective SES ladders
+            'ladder_education':      request.form.get('ladder_education'),
+            'ladder_money':          request.form.get('ladder_money'),
+            'ladder_job':            request.form.get('ladder_job'),
+            # Sociometric status ladders
+            'sociometric_respect':   request.form.get('sociometric_respect'),
+            'sociometric_admired':   request.form.get('sociometric_admired'),
+            'sociometric_important': request.form.get('sociometric_important'),
+        }
+        condition = assign_condition(g.db, Config)
+        data['condition'] = condition
+        data['assignment_timestamp'] = utcnow()
+        db_module.update_participant(g.db, p['participant_id'], data)
+        return redirect(url_for('traits'))
+
+    return render_template('ladders.html', prog=progress('ladders'))
+
+
+@app.route('/page/3', methods=['GET', 'POST'])
 @require_step('traits')
 def traits():
     p = get_current_participant()
@@ -296,7 +324,7 @@ def demographics():
         race       = request.form.getlist('demo_race')
         data = {
             'ts_demographics':      utcnow(),
-            'current_step':         'traits',
+            'current_step':         'ladders',
             # Demographics
             'demo_age':             request.form.get('demo_age'),
             'demo_gender':          request.form.get('demo_gender'),
@@ -310,20 +338,9 @@ def demographics():
             'ses_personal_income':  request.form.get('ses_personal_income'),
             'ses_employment':       ', '.join(employment),
             'ses_job_title':        request.form.get('ses_job_title', '').strip(),
-            # Subjective SES ladders
-            'ladder_education':     request.form.get('ladder_education'),
-            'ladder_money':         request.form.get('ladder_money'),
-            'ladder_job':           request.form.get('ladder_job'),
-            # Sociometric status ladders
-            'sociometric_respect':  request.form.get('sociometric_respect'),
-            'sociometric_admired':  request.form.get('sociometric_admired'),
-            'sociometric_important': request.form.get('sociometric_important'),
         }
-        condition = assign_condition(g.db, Config)
-        data['condition'] = condition
-        data['assignment_timestamp'] = utcnow()
         db_module.update_participant(g.db, p['participant_id'], data)
-        return redirect(url_for('traits'))
+        return redirect(url_for('ladders'))
 
     return render_template('demographics.html', prog=progress('demographics'))
 
@@ -354,7 +371,7 @@ WRITING_PROMPTS = {
 }
 
 
-@app.route('/page/3', methods=['GET', 'POST'])
+@app.route('/page/4', methods=['GET', 'POST'])
 @require_step('writing')
 def writing():
     p = get_current_participant()
@@ -405,7 +422,7 @@ STATEAUTO_ITEMS = [
 ]
 
 
-@app.route('/page/4', methods=['GET', 'POST'])
+@app.route('/page/5', methods=['GET', 'POST'])
 @require_step('mancheck')
 def mancheck():
     p = get_current_participant()
@@ -461,7 +478,7 @@ def _transcription_accuracy(target: str, submitted: str) -> float:
     return round(SequenceMatcher(None, normalise(target), normalise(submitted)).ratio(), 4)
 
 
-@app.route('/page/5', methods=['GET', 'POST'])
+@app.route('/page/6', methods=['GET', 'POST'])
 @require_step('boring_task')
 def boring_task():
     p = get_current_participant()
@@ -499,7 +516,7 @@ MSBS_ITEMS = [
 ]
 
 
-@app.route('/page/6', methods=['GET', 'POST'])
+@app.route('/page/7', methods=['GET', 'POST'])
 @require_step('outcome')
 def outcome():
     p = get_current_participant()
@@ -520,7 +537,7 @@ def outcome():
 
 
 # ── 8. Debrief ────────────────────────────────────────────────────────────────
-@app.route('/page/7', methods=['GET', 'POST'])
+@app.route('/page/8', methods=['GET', 'POST'])
 @require_step('debrief')
 def debrief():
     p = get_current_participant()

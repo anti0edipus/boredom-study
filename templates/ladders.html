@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Study – Page 2{% endblock %}
+{% block content %}
+<h1>Page 2</h1>
+<p>The following questions ask about where you see yourself in society. There are no right or wrong answers.</p>
+
+<form method="post" id="ladders-form" data-validate>
+
+  {% macro ladder_widget(field, top_label, bottom_label) %}
+  <div class="ladder-widget">
+    <div class="ladder-end-label top-label">&#9650; {{ top_label }}</div>
+    <div class="ladder-graphic">
+      <div class="ladder-rail"></div>
+      <div class="ladder-rungs">
+        {% for v in range(10, 0, -1) %}
+        <label class="visual-rung">
+          <input type="radio" name="{{ field }}" value="{{ v }}" required>
+          <span class="visual-rung-bar">{{ v }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <div class="ladder-rail"></div>
+    </div>
+    <div class="ladder-end-label bottom-label">&#9660; {{ bottom_label }}</div>
+  </div>
+  {% endmacro %}
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       SECTION: Subjective SES — Adler et al. (2000)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="ladder-section">
+    <h2 class="scale-title">Subjective SES Ladders
+      <span class="scale-citation">— Adler et al. (2000) — testing label</span>
+    </h2>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how much education people have in society.
+        At the top of the ladder are the people who have the most education. At the bottom
+        of the ladder are the people who have the least education. Please select the number
+        corresponding to that rung on the "ladder" that best represents how much education
+        you think you have.</label>
+      {{ ladder_widget('ladder_education', '10 (most education)', '1 (least education)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how much money people have in society.
+        At the top of the ladder are the people who have the most money. At the bottom of
+        the ladder are the people who have the least money. Please select the number
+        corresponding to that rung on the "ladder" that best represents how much money
+        you think you have.</label>
+      {{ ladder_widget('ladder_money', '10 (best off)', '1 (worst off)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how good of a job people have in society.
+        At the top of the ladder are the people who have the best jobs. At the bottom of
+        the ladder are the people who have the worst jobs or no job. Please select the number
+        corresponding to that rung on the "ladder" that best represents how good of a job
+        you think you have.</label>
+      {{ ladder_widget('ladder_job', '10 (best job)', '1 (worst job)') }}
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       SECTION: Sociometric Status — Mahadevan et al. (2021)
+  ════════════════════════════════════════════════════════════════════════ -->
+  <div class="ladder-section">
+    <h2 class="scale-title">Sociometric Status
+      <span class="scale-citation">— Mahadevan et al. (2021) — testing label</span>
+    </h2>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how respected people are in society.
+        At the top of the ladder are the people who are the most respected. At the bottom
+        of the ladder are the people who are the least respected. Please select the number
+        corresponding to that rung on the "ladder" that best represents how respected
+        you think you are.</label>
+      {{ ladder_widget('sociometric_respect', '10 (most respected)', '1 (least respected)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how admired people are in society.
+        At the top of the ladder are the people who are the most admired. At the bottom
+        of the ladder are the people who are the least admired. Please select the number
+        corresponding to that rung on the "ladder" that best represents how admired
+        you think you are.</label>
+      {{ ladder_widget('sociometric_admired', '10 (most admired)', '1 (least admired)') }}
+    </div>
+
+    <div class="form-group">
+      <label>Think of this ladder as representing how important people are in society.
+        At the top of the ladder are the people who are the most important. At the bottom
+        of the ladder are the people who are the least important. Please select the number
+        corresponding to that rung on the "ladder" that best represents how important
+        you think you are.</label>
+      {{ ladder_widget('sociometric_important', '10 (most important)', '1 (least important)') }}
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Continue &rarr;</button>
+</form>
+{% endblock %}

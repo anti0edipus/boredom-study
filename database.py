@@ -119,6 +119,7 @@ def init_db(path=None):
             ts_consent       TEXT,
             ts_traits        TEXT,
             ts_demographics  TEXT,
+            ts_ladders       TEXT,
             ts_writing       TEXT,
             ts_mancheck      TEXT,
             ts_boring_task   TEXT,
@@ -168,6 +169,7 @@ def init_db(path=None):
         ('sociometric_respect',     'INTEGER'),
         ('sociometric_admired',     'INTEGER'),
         ('sociometric_important',   'INTEGER'),
+        ('ts_ladders',              'TEXT'),
     ]
     for col, col_type in new_columns:
         try:
