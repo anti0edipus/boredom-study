@@ -349,38 +349,37 @@ def demographics():
 # ── 4. Writing task ───────────────────────────────────────────────────────────
 WRITING_PROMPTS = {
     'meaning': (
-        'When we talk about someone having a sense of “meaning” in life, we mean that they '
+        'When we talk about someone having a sense of "meaning" in life, we mean that they '
         'feel their life has significance and purpose, and that they act in line with what '
         'they believe matters. What feels meaningful differs from person to person — for some '
-        "it's helping others, for some it's a relationship, an achievement, a belief, or a "
-        'moment that mattered deeply. Having “meaning in life” means spending your time on '
-        'things that fit those beliefs.\n\n'
-        "Take a moment to bring to mind a specific time in your life that felt particularly "
-        "meaningful to you — a single event or moment, not a general period.\n\n"
-        "Now spend a minute imagining, as vividly as you can, that you are back in that moment. "
-        "Picture where you were, what you could see around you, what you were feeling, what you "
-        "were thinking, and who else was there with you.\n\n"
-        "In the box below, describe that experience in as much detail as you can. Write about "
-        "what happened, what made it so meaningful to you, how you felt during it, and why it "
-        "has stayed with you. Try to keep writing for the full time, and include as many "
-        "concrete details as possible."
+        "it's helping others, for some it's a relationship, an achievement, or a belief.\n\n"
+        "Even if it might be difficult for you, please think for a moment about what makes "
+        "your life meaningful. First, write down three keywords that capture what makes your "
+        "life meaningful. Now explain, in detail, why your life is meaningful to you. Try to "
+        "write at least three sentences, and keep writing for the full time, including as many "
+        "concrete details as you can."
     ),
     'autonomy': (
-        "Please think of a recent action or decision that you freely chose — something "
-        "you did entirely on your own terms, because you genuinely wanted to, without "
-        "external pressure. In the box below, describe what you did, why you chose to do it, "
-        "and how it felt to act in that self-endorsed way. "
-        "[PLACEHOLDER — replace with final IRB-approved wording.]"
+        'When we talk about someone feeling a sense of "autonomy," we mean the feeling that '
+        'what you do is truly your own choice — that you act in line with your own values and '
+        "interests, because you genuinely want to, rather than because you feel pressured, "
+        "obligated, or controlled by someone else.\n\n"
+        "Even if it might be difficult for you, please think for a moment about the ways your "
+        "life reflects your own free choices. First, write down three keywords that capture "
+        "what makes your life feel freely chosen and your own. Now explain, in detail, why "
+        "your life feels like your own free choice. Try to write at least three sentences, and "
+        "keep writing for the full time, including as many concrete details as you can."
     ),
     'control': (
-        "Please describe your typical morning routine in as much detail as possible. "
-        "What do you usually do from the moment you wake up until you leave for the day "
-        "(or start work)? Include the order of activities, roughly how long each takes, "
-        "and any variations between weekdays and weekends. "
-        "[PLACEHOLDER — replace with final IRB-approved wording.]"
+        "We are interested in how people describe everyday activities. Please think for a "
+        "moment about a typical morning routine — the ordinary steps you take from waking up "
+        "to starting your day.\n\n"
+        "First, write down three keywords that capture your typical morning routine. Now "
+        "describe, in detail, what a typical morning looks like for you, step by step. Try to "
+        "write at least three sentences, and keep writing for the full time, including as many "
+        "concrete details as you can."
     ),
 }
-
 
 @app.route('/page/4', methods=['GET', 'POST'])
 @require_step('writing')
