@@ -4,7 +4,9 @@
 <h1>Page 4</h1>
 
 <div class="writing-prompt-box">
-  <p>{{ prompt }}</p>
+  {% for para in prompt.split('\n\n') %}
+  <p>{{ para }}</p>
+  {% endfor %}
 </div>
 
 <form method="post" id="writing-form">

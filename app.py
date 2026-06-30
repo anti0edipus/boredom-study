@@ -349,11 +349,21 @@ def demographics():
 # ── 4. Writing task ───────────────────────────────────────────────────────────
 WRITING_PROMPTS = {
     'meaning': (
-        "Please take a few minutes to think about your most important life goals — "
-        "the things that feel truly self-defining and intrinsically meaningful to you. "
-        "In the box below, write about these goals: what they are, why they matter to you "
-        "personally, and what makes your life feel meaningful. "
-        "[PLACEHOLDER — replace with final IRB-approved wording.]"
+        'When we talk about someone having a sense of “meaning” in life, we mean that they '
+        'feel their life has significance and purpose, and that they act in line with what '
+        'they believe matters. What feels meaningful differs from person to person — for some '
+        "it's helping others, for some it's a relationship, an achievement, a belief, or a "
+        'moment that mattered deeply. Having “meaning in life” means spending your time on '
+        'things that fit those beliefs.\n\n'
+        "Take a moment to bring to mind a specific time in your life that felt particularly "
+        "meaningful to you — a single event or moment, not a general period.\n\n"
+        "Now spend a minute imagining, as vividly as you can, that you are back in that moment. "
+        "Picture where you were, what you could see around you, what you were feeling, what you "
+        "were thinking, and who else was there with you.\n\n"
+        "In the box below, describe that experience in as much detail as you can. Write about "
+        "what happened, what made it so meaningful to you, how you felt during it, and why it "
+        "has stayed with you. Try to keep writing for the full time, and include as many "
+        "concrete details as possible."
     ),
     'autonomy': (
         "Please think of a recent action or decision that you freely chose — something "
