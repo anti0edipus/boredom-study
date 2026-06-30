@@ -35,6 +35,8 @@ def init_db(path=None):
             user_agent          TEXT,
             screen_w            INTEGER,
             screen_h            INTEGER,
+            prolific_id_entry   TEXT,
+            followup_interest   INTEGER DEFAULT 0,
 
             -- Trait scales (placeholders; extend item count to match actual instruments)
             bps_1 INTEGER, bps_2 INTEGER, bps_3 INTEGER, bps_4 INTEGER,
@@ -173,6 +175,8 @@ def init_db(path=None):
         ('sociometric_admired',     'INTEGER'),
         ('sociometric_important',   'INTEGER'),
         ('ts_ladders',              'TEXT'),
+        ('prolific_id_entry',       'TEXT'),
+        ('followup_interest',       'INTEGER'),
     ]
     for col, col_type in new_columns:
         try:

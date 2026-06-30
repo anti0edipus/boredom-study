@@ -146,12 +146,13 @@ def consent():
         screen_w = request.form.get('screen_w')
         screen_h = request.form.get('screen_h')
         db_module.update_participant(g.db, p['participant_id'], {
-            'consent':           1,
-            'consent_timestamp': utcnow(),
-            'ts_consent':        utcnow(),
-            'current_step':      'demographics',
-            'screen_w':          int(screen_w) if screen_w else None,
-            'screen_h':          int(screen_h) if screen_h else None,
+            'consent':             1,
+            'consent_timestamp':   utcnow(),
+            'ts_consent':          utcnow(),
+            'current_step':        'demographics',
+            'screen_w':            int(screen_w) if screen_w else None,
+            'screen_h':            int(screen_h) if screen_h else None,
+            'prolific_id_entry':   request.form.get('prolific_id_entry', '').strip(),
         })
         return redirect(url_for('demographics'))
     return render_template('consent.html', prog=progress('consent'))
@@ -552,11 +553,12 @@ def debrief():
         except Exception:
             duration = None
         db_module.update_participant(g.db, p['participant_id'], {
-            'ts_debrief':       finish,
-            'finish_timestamp': finish,
+            'ts_debrief':         finish,
+            'finish_timestamp':   finish,
             'total_duration_sec': duration,
-            'completed':        1,
-            'current_step':     'completed',
+            'completed':          1,
+            'current_step':       'completed',
+            'followup_interest':  1 if request.form.get('followup_interest') else 0,
         })
         session.pop('participant_id', None)
         return redirect(Config.PROLIFIC_COMPLETION_URL)
@@ -616,7 +618,7 @@ def export_xlsx():
         'test_mode', 'condition', 'assignment_timestamp',
         'current_step', 'start_timestamp', 'finish_timestamp', 'total_duration_sec', 'completed',
         'consent', 'consent_timestamp', 'attention_check_pass',
-        'user_agent', 'screen_w', 'screen_h',
+        'user_agent', 'screen_w', 'screen_h', 'prolific_id_entry', 'followup_interest',
         # Demographics
         'demo_age', 'demo_gender', 'demo_relationship', 'demo_ethnicity', 'demo_race', 'demo_race_other',
         # Objective SES
