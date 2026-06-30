@@ -644,7 +644,8 @@ def delete_all():
     return redirect(url_for('admin') + '?deleted=1')
 
 
-# ── Run ───────────────────────────────────────────────────────────────────────
+# ── Initialise DB on startup (runs under both gunicorn and python app.py) ─────
+db_module.init_db()
+
 if __name__ == '__main__':
-    db_module.init_db()
     app.run(debug=True, port=5000)
